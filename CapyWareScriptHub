@@ -1,1 +1,54 @@
-Soon
+local OrionLibCapyWare = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+
+local Window = OrionLibCapyWare:MakeWindow({Name = "CapyWareHub", HidePremium = false, SaveConfig = false, ConfigFolder = "OrionLibCapyWare"})
+
+OrionLibCapyWare:MakeNotification({
+	Name = "CapyWareHub",
+	Content = "Scripts-For-CapyWare-t.me/CapyExploits",
+	Image = "rbxassetid://4483345998",
+	Time = 5
+})
+
+local Universals = Window:MakeTab({
+	Name = "Universal",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+Universals:AddButton({
+	Name = "Infinite Yield",
+	Callback = function()
+      		loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
+  	end    
+})
+
+Universals:AddButton({
+	Name = "AimBot",
+	Callback = function()
+      		loadstring(game:HttpGet("https://raw.githubusercontent.com/MSTTOPPER/Scripts/main/AimBotPc"))()
+  	end    
+})
+
+Universals:AddTextbox({
+	Name = "Hitbox Expander",
+	Default = "",
+	TextDisappear = true,
+	Callback = function(Value)
+		_G.HeadSize = Value _G.Disabled = true game:GetService('RunService').RenderStepped:connect(function() if _G.Disabled then for i,v in next, game:GetService('Players'):GetPlayers() do if v.Name ~= game:GetService('Players').LocalPlayer.Name then pcall(function() v.Character.Head.Size = Vector3.new(_G.HeadSize,_G.HeadSize,_G.HeadSize) v.Character.Head.Transparency = 1 v.Character.Head.BrickColor = BrickColor.new("Red") v.Character.Head.Material = "Neon" v.Character.Head.CanCollide = false v.Character.Head.Massless = true end) end end end end)
+	end	  
+})
+
+Universals:AddButton({
+	Name = "Checkpoit",
+	Callback = function()
+      		loadstring(game:HttpGet("https://pastebin.com/raw/BmEZXSZ2"))()
+  	end    
+})
+
+Universals:AddButton({
+	Name = "Motion Recording",
+	Callback = function()
+      		loadstring(game:HttpGet("https://pastebin.com/raw/8rrPXjVs"))()
+  	end    
+})
+OrionLib:Init()
