@@ -880,7 +880,7 @@ function redzlib:MakeWindow(Configs)
     })
     
     local Screen = InsertTheme(Create("Frame", MainFrame, {
-      BackgroundTransparency = 0.6,
+      BackgroundTransparency = 0.9,
       Active = true,
       BackgroundColor3 = Theme["Color Hub 2"],
       Size = UDim2.new(1, 0, 1, 0),
