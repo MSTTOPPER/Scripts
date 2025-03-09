@@ -1,0 +1,57 @@
+-- Ода открытый сурс щас украду
+local Library = loadstring(Game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wizard"))()
+local Players = game:GetService("Players")
+local lastDeath
+local spawnecnab = false
+
+local PhantomForcesWindow = Library:NewWindow("KanavaFarm")
+local KillingCheats = PhantomForcesWindow:NewSection("AutoFarm")
+
+local function getRoot(char)
+    local rootPart = char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("Torso")
+    return rootPart
+end
+
+local function onDied()
+    task.spawn(function()
+        if pcall(function() Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid') end) and Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid') then
+            Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').Died:Connect(function()
+                if getRoot(Players.LocalPlayer.Character) then
+                    lastDeath = getRoot(Players.LocalPlayer.Character).CFrame
+                end
+            end)
+        else
+            wait(2)
+            onDied()
+        end
+    end)
+end
+
+Players.LocalPlayer.CharacterAdded:Connect(function()
+    repeat wait() until getRoot(Players.LocalPlayer.Character)
+    pcall(function()
+        if spawnecnab then
+            wait(0.1)
+            getRoot(Players.LocalPlayer.Character).CFrame = CFrame.new(0.22747802734375, 2055.5498046875, -28.64958953857422)
+        end
+    end)
+    onDied()
+end)
+
+onDied()
+
+KillingCheats:CreateToggle("AutoFarm", function(value)
+    spawnecnab = value
+    if value then
+        getRoot(Players.LocalPlayer.Character).CFrame = CFrame.new(0.22747802734375, 2055.5498046875, -28.64958953857422)
+        workspace.Kil.CFrame = CFrame.new(0, 1000, -28, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+    else
+        getRoot(Players.LocalPlayer.Character).CFrame = CFrame.new(-0.9, 2049, -0.41)
+        workspace.Kil.CFrame = CFrame.new(0, -12289, -28, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+    end
+    print("AutoFarm set to: " .. tostring(value))
+end)
+
+KillingCheats:CreateButton("t.me/CapyExploits", function()
+    print("Kanava farm made by t.me/CapyExploits (MST)")
+end)
