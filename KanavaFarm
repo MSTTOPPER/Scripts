@@ -3,9 +3,10 @@ local Library = loadstring(Game:HttpGet("https://raw.githubusercontent.com/blood
 local Players = game:GetService("Players")
 local lastDeath
 local spawnecnab = false
-
 local PhantomForcesWindow = Library:NewWindow("KanavaFarm")
 local KillingCheats = PhantomForcesWindow:NewSection("AutoFarm")
+
+
 
 local function getRoot(char)
     local rootPart = char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("Torso")
@@ -39,6 +40,13 @@ Players.LocalPlayer.CharacterAdded:Connect(function()
 end)
 
 onDied()
+
+--Обход анти чита
+getRoot(Players.LocalPlayer.Character).CFrame = CFrame.new(-5, -12212.32, -20.21)
+wait(0.1)
+getRoot(Players.LocalPlayer.Character).CFrame = CFrame.new(-0.9, 2049, -0.41)
+
+
 
 KillingCheats:CreateToggle("AutoFarm", function(value)
     spawnecnab = value
