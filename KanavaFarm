@@ -52,7 +52,7 @@ KillingCheats:CreateToggle("AutoFarm", function(value)
     spawnecnab = value
     if value then
         getRoot(Players.LocalPlayer.Character).CFrame = CFrame.new(0.22747802734375, 2055.5498046875, -28.64958953857422)
-        workspace.Kil.CFrame = CFrame.new(0, 1000, -28, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+        workspace.Kil.CFrame = CFrame.new(0, 950, -28, 1, 0, 0, 0, 1, 0, 0, 0, 1)
     else
         getRoot(Players.LocalPlayer.Character).CFrame = CFrame.new(-0.9, 2049, -0.41)
         workspace.Kil.CFrame = CFrame.new(0, -12289, -28, 1, 0, 0, 0, 1, 0, 0, 0, 1)
