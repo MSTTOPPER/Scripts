@@ -1,0 +1,15 @@
+--ezz free source, t.me/CapyExploits
+local player = game:GetService("Players").LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+local touchGui = playerGui:WaitForChild("TouchGui")
+local tcf = touchGui:WaitForChild("TouchControlFrame")
+local jumpButton = tcf:WaitForChild("JumpButton")
+local dynamicThumbstick = tcf:WaitForChild("DynamicThumbstickFrame")
+
+if jumpButton.ImageTransparency == 1 then
+    jumpButton.ImageTransparency = 0
+    dynamicThumbstick.Visible = true
+else
+    jumpButton.ImageTransparency = 1
+    dynamicThumbstick.Visible = false
+end
