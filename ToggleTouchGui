@@ -26,7 +26,7 @@ end
 
 local function toggleSecondType()
 	if outerImage and stickImage then
-		-- Если первая кнопка скрыта, считаем, что нужно показать
+
 		if outerImage.ImageTransparency == 1 then
 			outerImage.ImageTransparency = 0
 			stickImage.ImageTransparency = 0
