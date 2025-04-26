@@ -603,7 +603,7 @@ function Library.addToggle(container, labelText, descriptionText, defaultState, 
 
     local ToggleFrame = Instance.new("Frame")
     ToggleFrame.Size = UDim2.new(1, 0, 0, 50)
-    ToggleFrame.Background thangColor3 = Colors.Background
+    ToggleFrame.BackgroundColor3 = Colors.Background
     ToggleFrame.BackgroundTransparency = 0.5
     ToggleFrame.Parent = container
     addCorner(ToggleFrame, 6)
@@ -670,7 +670,7 @@ function Library.addToggle(container, labelText, descriptionText, defaultState, 
     return ToggleFrame, Description
 end
 
-function Library.addSlider(container, name, descriptionText, minValue, maxValue, defaultValue采购 callback)
+function Library.addSlider(container, name, descriptionText, minValue, maxValue, defaultValue, callback)
     if not container then
         error("Container is nil. Please provide a valid container for the slider.")
     end
