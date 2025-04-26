@@ -41,8 +41,7 @@ local function addStroke(instance, thickness, color)
 end
 
 -- Main UI Creation
-function Library:CreateUI(title, description, allowedUserIds)
-    self.allowedUserIds = allowedUserIds or {}
+function Library:CreateUI(title, description)
     local ScreenGui = Instance.new("ScreenGui")
     ScreenGui.Parent = mainGui
 
@@ -62,7 +61,7 @@ function Library:CreateUI(title, description, allowedUserIds)
     addStroke(MainFrame, 2)
 
     local TopBar = Instance.new("Frame")
-    TopBar.Size = UDim2.new(1, 0, 0, 36)
+    TopBar.Size = UDim2.new(1, 0, 0, 60) -- Увеличена высота для размещения описания
     TopBar.BackgroundColor3 = Colors.DarkPrimary
     TopBar.BackgroundTransparency = 0.2
     TopBar.ZIndex = 10
@@ -84,7 +83,7 @@ function Library:CreateUI(title, description, allowedUserIds)
 
     local dragging, startPos, startSize
     ResizeButton.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             dragging = true
             startPos = input.Position
             startSize = MainFrame.Size
@@ -97,7 +96,7 @@ function Library:CreateUI(title, description, allowedUserIds)
     end)
 
     UserInputService.InputChanged:Connect(function(input)
-        if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+        if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
             local delta = input.Position - startPos
             MainFrame.Size = UDim2.new(0, math.max(300, startSize.X.Offset + delta.X), 0, math.max(200, startSize.Y.Offset + delta.Y))
         end
@@ -246,7 +245,7 @@ function Library:CreateUI(title, description, allowedUserIds)
     ToggleButton.Position = UDim2.new(0.14, 0, 0.1, 0)
     ToggleButton.BackgroundColor3 = Colors.Primary
     ToggleButton.BackgroundTransparency = 0.7
-    ToggleButton.Text = "☰"
+    ToggleButton.Text = "👀" -- Изменено на эмодзи глаз
     ToggleButton.TextSize = 20
     ToggleButton.Font = Enum.Font.GothamBold
     ToggleButton.TextColor3 = Colors.Text
@@ -276,8 +275,8 @@ function Library:CreateUI(title, description, allowedUserIds)
     Line.Parent = TopBar
 
     local TitleLabel = Instance.new("TextLabel")
-    TitleLabel.Size = UDim2.new(0, 200, 1, 0)
-    TitleLabel.Position = UDim2.new(0, 10, 0, 0)
+    TitleLabel.Size = UDim2.new(0, 300, 0, 20)
+    TitleLabel.Position = UDim2.new(0, 10, 0, 5)
     TitleLabel.BackgroundTransparency = 1
     TitleLabel.Text = title
     TitleLabel.TextSize = 16
@@ -288,8 +287,8 @@ function Library:CreateUI(title, description, allowedUserIds)
     TitleLabel.Parent = TopBar
 
     local DescriptionLabel = Instance.new("TextLabel")
-    DescriptionLabel.Size = UDim2.new(0, 300, 1, 0)
-    DescriptionLabel.Position = UDim2.new(1, -310, 0, 0)
+    DescriptionLabel.Size = UDim2.new(0, 300, 0, 20)
+    DescriptionLabel.Position = UDim2.new(0, 10, 0, 25)
     DescriptionLabel.BackgroundTransparency = 1
     DescriptionLabel.Text = description
     DescriptionLabel.TextSize = 14
@@ -300,8 +299,8 @@ function Library:CreateUI(title, description, allowedUserIds)
     DescriptionLabel.Parent = TopBar
 
     local TabsContainer = Instance.new("ScrollingFrame")
-    TabsContainer.Size = UDim2.new(0.3, 0, 1, -40)
-    TabsContainer.Position = UDim2.new(0, 5, 0, 40)
+    TabsContainer.Size = UDim2.new(0.3, 0, 1, -64)
+    TabsContainer.Position = UDim2.new(0, 5, 0, 64)
     TabsContainer.BackgroundTransparency = 1
     TabsContainer.CanvasSize = UDim2.new(0, 0, 0, 0)
     TabsContainer.ScrollBarThickness = 0
@@ -323,18 +322,11 @@ function Library:CreateUI(title, description, allowedUserIds)
     end)
 
     local Container = Instance.new("Frame")
-    Container.Size = UDim2.new(0.7, -10, 1, -40)
-    Container.Position = UDim2.new(0.3, 5, 0, 40)
+    Container.Size = UDim2.new(0.7, -10, 1, -64)
+    Container.Position = UDim2.new(0.3, 5, 0, 64)
     Container.BackgroundTransparency = 1
     Container.Parent = MainFrame
     addCorner(Container, 6)
-
-    local function isPlayerPremium(player)
-        for _, id in ipairs(self.allowedUserIds) do
-            if player.UserId == id then return true end
-        end
-        return false
-    end
 
     local Tab = {TabsContainer = TabsContainer, Container = Container}
 
@@ -403,26 +395,6 @@ function Library:CreateUI(title, description, allowedUserIds)
             TabFrame.Visible = true
         end)
 
-        if isPremium and not isPlayerPremium(game.Players.LocalPlayer) then
-            local Overlay = Instance.new("Frame")
-            Overlay.Size = UDim2.new(1, 0, 1, 0)
-            Overlay.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-            Overlay.BackgroundTransparency = 0.7
-            Overlay.ZIndex = 5
-            Overlay.Parent = TabFrame
-
-            local Label = Instance.new("TextLabel")
-            Label.Size = UDim2.new(1, 0, 0, 40)
-            Label.Position = UDim2.new(0, 0, 0.5, -20)
-            Label.BackgroundTransparency = 1
-            Label.Text = "Premium Only"
-            Label.TextColor3 = Color3.fromRGB(255, 200, 0)
-            Label.Font = Enum.Font.GothamBold
-            Label.TextSize = 18
-            Label.ZIndex = 6
-            Label.Parent = Overlay
-        end
-
         return FrameScroll
     end
 
@@ -431,6 +403,10 @@ end
 
 -- UI Elements
 function Library.addButton(container, buttonText, descriptionText, callback)
+    if not container then
+        error("Container is nil. Please provide a valid container for the button.")
+    end
+
     local Button = Instance.new("TextButton")
     Button.Size = UDim2.new(1, 0, 0, 50)
     Button.Text = buttonText
@@ -478,6 +454,10 @@ function Library.addButton(container, buttonText, descriptionText, callback)
 end
 
 function Library.AddColorPicker(container, labelText, defaultColor, callback)
+    if not container then
+        error("Container is nil. Please provide a valid container for the color picker.")
+    end
+
     local ColorPicker = Instance.new("Frame")
     ColorPicker.Size = UDim2.new(1, 0, 0, 50)
     ColorPicker.BackgroundColor3 = Colors.Background
@@ -574,11 +554,11 @@ function Library.AddColorPicker(container, labelText, defaultColor, callback)
     end
 
     ColorWheel.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             updateColor(input)
             local conn
             conn = UserInputService.InputChanged:Connect(function(moveInput)
-                if moveInput.UserInputType == Enum.UserInputType.MouseMovement then
+                if moveInput.UserInputType == Enum.UserInputType.MouseMovement or moveInput.UserInputType == Enum.UserInputType.Touch then
                     updateColor(moveInput)
                 end
             end)
@@ -617,9 +597,13 @@ function Library.AddColorPicker(container, labelText, defaultColor, callback)
 end
 
 function Library.addToggle(container, labelText, descriptionText, defaultState, callback)
+    if not container then
+        error("Container is nil. Please provide a valid container for the toggle.")
+    end
+
     local ToggleFrame = Instance.new("Frame")
     ToggleFrame.Size = UDim2.new(1, 0, 0, 50)
-    ToggleFrame.BackgroundColor3 = Colors.Background
+    ToggleFrame.Background thangColor3 = Colors.Background
     ToggleFrame.BackgroundTransparency = 0.5
     ToggleFrame.Parent = container
     addCorner(ToggleFrame, 6)
@@ -686,7 +670,11 @@ function Library.addToggle(container, labelText, descriptionText, defaultState, 
     return ToggleFrame, Description
 end
 
-function Library.addSlider(container, name, descriptionText, minValue, maxValue, defaultValue, callback)
+function Library.addSlider(container, name, descriptionText, minValue, maxValue, defaultValue采购 callback)
+    if not container then
+        error("Container is nil. Please provide a valid container for the slider.")
+    end
+
     local hasDescription = descriptionText and descriptionText ~= ""
     local frameHeight = hasDescription and 70 or 50
 
@@ -737,7 +725,7 @@ function Library.addSlider(container, name, descriptionText, minValue, maxValue,
 
     local Track = Instance.new("Frame")
     Track.Size = UDim2.new(1, -80, 0, 8)
-    Track.Position = UDim2.new(0, 10, 1, -14)
+    Track.Position = UDim2.new(0, 10, 1, hasDescription and -14 or -14)
     Track.BackgroundColor3 = Colors.DarkPrimary
     Track.Parent = SliderFrame
     addCorner(Track, 4)
@@ -763,7 +751,9 @@ function Library.addSlider(container, name, descriptionText, minValue, maxValue,
         Fill.Size = UDim2.new(ratio, 0, 1, 0)
         Thumb.Position = UDim2.new(ratio, 0, 0.5, 0)
         TextBox.Text = tostring(value)
-        callback(value)
+        if callback then
+            callback(value)
+        end
     end
 
     Track.InputBegan:Connect(function(input)
@@ -786,13 +776,21 @@ function Library.addSlider(container, name, descriptionText, minValue, maxValue,
 
     TextBox.FocusLost:Connect(function()
         local val = tonumber(TextBox.Text)
-        if val then update(val) else update(defaultValue) end
+        if val then
+            update(val)
+        else
+            update(defaultValue)
+        end
     end)
 
     update(defaultValue)
 end
 
 function Library.addDropdown(container, labelText, buttonText, options, callback)
+    if not container then
+        error("Container is nil. Please provide a valid container for the dropdown.")
+    end
+
     local Dropdown = Instance.new("Frame")
     Dropdown.Size = UDim2.new(1, 0, 0, 50)
     Dropdown.BackgroundColor3 = Colors.Background
@@ -916,6 +914,10 @@ function Library.addDropdown(container, labelText, buttonText, options, callback
 end
 
 function Library.addTextbox(container, labelText, placeholderText, defaultText, callback)
+    if not container then
+        error("Container is nil. Please provide a valid container for the textbox.")
+    end
+
     local TextboxFrame = Instance.new("Frame")
     TextboxFrame.Size = UDim2.new(1, 0, 0, 50)
     TextboxFrame.BackgroundColor3 = Colors.Background
@@ -954,6 +956,10 @@ function Library.addTextbox(container, labelText, placeholderText, defaultText, 
 end
 
 function Library.addParagraph(container, text)
+    if not container then
+        error("Container is nil. Please provide a valid container for the paragraph.")
+    end
+
     local ParagraphFrame = Instance.new("Frame")
     ParagraphFrame.Size = UDim2.new(1, 0, 0, 50)
     ParagraphFrame.BackgroundTransparency = 1
@@ -973,6 +979,10 @@ function Library.addParagraph(container, text)
 end
 
 function Library.addSection(container, title)
+    if not container then
+        error("Container is nil. Please provide a valid container for the section.")
+    end
+
     local Section = Instance.new("Frame")
     Section.Size = UDim2.new(1, 0, 0, 40)
     Section.BackgroundColor3 = Colors.DarkPrimary
@@ -992,6 +1002,10 @@ function Library.addSection(container, title)
 end
 
 function Library.addLabel(container, text)
+    if not container then
+        error("Container is nil. Please provide a valid container for the label.")
+    end
+
     local LabelFrame = Instance.new("Frame")
     LabelFrame.Size = UDim2.new(1, 0, 0, 50)
     LabelFrame.BackgroundColor3 = Colors.Background
@@ -1018,6 +1032,10 @@ function Library.addLabel(container, text)
 end
 
 function Library.AddKeybind(container, text, defaultKey, callback)
+    if not container then
+        error("Container is nil. Please provide a valid container for the keybind.")
+    end
+
     local KeybindFrame = Instance.new("Frame")
     KeybindFrame.Size = UDim2.new(1, 0, 0, 50)
     KeybindFrame.BackgroundColor3 = Colors.Background
